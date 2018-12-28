@@ -4,8 +4,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.*;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.junit.Test;
@@ -53,6 +53,41 @@ public class LuceneFirst {
         // 6. 关闭IndexWriter
         indexWriter.close ();
         directory.close ();
-
     }
+
+    @Test
+    public void serachIndex () throws Exception {
+        // 1. 创建一个Directory对象，指定索引库的位置
+        Directory directory = FSDirectory.open (new File ("E:\\code\\lucene\\index").toPath ());
+        // 2. 创建一个IndexReader对象
+        IndexReader indexReader = DirectoryReader.open (directory);
+        // 3. 创建一个IndexSearch对象，构造方法中的参数是indexReader对象
+        IndexSearcher indexSearcher = new IndexSearcher (indexReader);
+        // 4. 创建一个Query对象，TermQuery
+       // new Term(关键词所在域，关键词)
+        Query query = new TermQuery (new Term ("content", "spring"));
+        // 5. 执行查询，得到一个TopDocs对象
+        // 参数1：查询对象  参数2：查询结果返回的最大记录数
+        TopDocs topDocs = indexSearcher.search (query, 10);
+        // 6. 取查询结果的总记录数
+        System.out.println ("查询总记录数：" + topDocs.totalHits);
+        // 7. 取文档列表
+        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+        // 8. 打印文档内容
+        for (ScoreDoc doc : scoreDocs) {
+            // 取文档id
+            int docId = doc.doc;
+            // 根据id取文档对象
+            Document document = indexSearcher.doc (docId);
+            System.out.println (document.get ("name"));
+            System.out.println (document.get ("path"));
+            System.out.println (document.get ("size"));
+//            System.out.println (document.get ("content"));
+            System.out.println ("---------分割线--------");
+        }
+        // 9. 关闭IndexReader对象
+        indexReader.close ();
+        directory.close ();
+    }
+
 }
