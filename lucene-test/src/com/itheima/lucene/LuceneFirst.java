@@ -24,7 +24,9 @@ public class LuceneFirst {
         // 1. 创建Directory对象,指定索引库的保存位置
         Directory directory = FSDirectory.open (new File("E:\\code\\lucene\\index").toPath ());
         // 2. 基于Directory对象创建IndexWriter对象
-        IndexWriter indexWriter = new IndexWriter (directory,new IndexWriterConfig ());
+        // 使用支持中文分析的Analyzer
+        IndexWriterConfig config = new IndexWriterConfig (new IKAnalyzer ());
+        IndexWriter indexWriter = new IndexWriter (directory,config);
         // 3. 读取磁盘上的文件，每个文件对应创建一个Document文档对象
         File dir = new File ("E:\\code\\lucene\\searchsource");
         for (File file : dir.listFiles ()) {
