@@ -21,6 +21,9 @@ import java.io.IOException;
 public class LuceneFirst {
     @Test
     public void testLucene() throws IOException {
+        // 1. 索引库还可以存放到内存中
+        //Directory directory = new RAMDirectory();
+
         // 1. 创建Directory对象,指定索引库的保存位置
         Directory directory = FSDirectory.open (new File("E:\\code\\lucene\\index").toPath ());
         // 2. 基于Directory对象创建IndexWriter对象
