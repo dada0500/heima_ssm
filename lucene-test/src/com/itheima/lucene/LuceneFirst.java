@@ -5,9 +5,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.TextField;
+import org.apache.lucene.document.*;
 import org.apache.lucene.index.*;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
@@ -45,16 +43,21 @@ public class LuceneFirst {
             // 创建Field
             // 参数1： 域的名称  参数2： 域的内容  参数3：是否存储
             TextField fieldName = new TextField ("name", fileName, Field.Store.YES);
-            TextField fieldPath = new TextField ("path", filePath, Field.Store.YES);
+//            TextField fieldPath = new TextField ("path", filePath, Field.Store.YES);
+            StoredField fieldPath = new StoredField ("path", filePath);
             TextField fieldContent = new TextField ("content", fileContent, Field.Store.YES);
-            TextField fieldSize = new TextField ("size", fileSize + "", Field.Store.YES);
+//            TextField fieldSize = new TextField ("size", fileSize + "", Field.Store.YES);
+            LongPoint fieldSizePoint = new LongPoint ("size", fileSize);
+            StoredField fieldSizeStore = new StoredField ("size", fileSize);
 
             // 4. 向文档对象中添加域
             Document document = new Document ();
             document.add (fieldName);
             document.add (fieldPath);
             document.add (fieldContent);
-            document.add (fieldSize);
+//            document.add (fieldSize);
+            document.add (fieldSizePoint);
+            document.add (fieldSizeStore);
 
             // 5. 把文档对象写入索引库
             indexWriter.addDocument (document);
