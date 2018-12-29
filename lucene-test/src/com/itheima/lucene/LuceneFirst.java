@@ -18,7 +18,7 @@ import java.io.IOException;
 
 public class LuceneFirst {
     @Test
-    public void testLucene() throws IOException {
+    public void createIndex() throws IOException {
         // 1. 索引库还可以存放到内存中
         //Directory directory = new RAMDirectory();
 
