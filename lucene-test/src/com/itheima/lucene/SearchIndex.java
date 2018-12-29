@@ -30,7 +30,7 @@ public class SearchIndex {
     @Test
     public void testRangeQuery() throws Exception{
         // 创建一个Query对象
-        Query query = LongPoint.newRangeQuery ("size", 01, 100);
+        Query query = LongPoint.newRangeQuery ("size", 0l, 100l);
         printResult(query);
     }
 

@@ -62,7 +62,7 @@ public class LuceneFirst {
             // 5. 把文档对象写入索引库
             indexWriter.addDocument (document);
         }
-
+        indexWriter.flush ();
         // 6. 关闭IndexWriter
         indexWriter.close ();
         directory.close ();
